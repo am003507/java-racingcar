@@ -1,5 +1,7 @@
 package step3.controller;
 
+import step3.RacingRecord;
+
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -8,17 +10,16 @@ public class ResultController {
     private static final String RACING_DASH = "-";
     private static final String NEW_LINE = "\n";
 
-    public void printRacingLog(List<Integer> racingStepResult) {
-        if (racingStepResult == null) {
-            throw new NullPointerException();
+    public static void drawRacingRecord(List<RacingRecord> racingRecords) {
+        for (RacingRecord racingRecord : racingRecords) {
+            System.out.println(makeRacingResult(racingRecord));
         }
-        System.out.println(makeRacingResult(racingStepResult));
     }
 
-    public String makeRacingResult(List<Integer> racingStepResult) {
+    private static String makeRacingResult(RacingRecord racingRecord) {
         StringBuilder sb = new StringBuilder();
-        racingStepResult
-                .stream()
+        racingRecord
+                .export()
                 .forEach(
                         location -> {
                             sb.append(makeLocationString(location));
@@ -28,7 +29,7 @@ public class ResultController {
         return sb.toString();
     }
 
-    public String makeLocationString(int location) {
+    private static String makeLocationString(int location) {
         StringBuilder sb = new StringBuilder();
         IntStream
                 .range(0, location)

@@ -1,26 +1,26 @@
 package step3;
 
-import step3.strategy.MoveStrategy;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class RacingGame {
 
-    private MoveStrategy moveStrategy;
     private RacingCarList racingCarList;
+    private RacingSpec racingSpec;
 
-    public RacingGame(int carCount, MoveStrategy moveStrategy) {
-        if (moveStrategy == null) {
-            throw new NullPointerException(ErrorMessage.MOVE_STRATEGY_IS_NULL);
-        }
-        this.moveStrategy = moveStrategy;
-        this.racingCarList = new RacingCarList(carCount);
+    public RacingGame(RacingSpec racingSpec) {
+        this.racingCarList = new RacingCarList(racingSpec.getCarCount());
+        this.racingSpec = racingSpec;
     }
 
-    public void playStep() {
-        racingCarList.moveCars(moveStrategy);
-    }
-
-    public RacingCarList getRacingCarList() {
-        return racingCarList;
+    public List<RacingRecord> play() {
+        List<RacingRecord> ret = new ArrayList<>();
+        IntStream.range(0, racingSpec.getMoveCount()).forEach(i -> {
+            RacingRecord racingRecord = racingCarList.moveCars();
+            ret.add(racingRecord);
+        });
+        return ret;
     }
 
 }

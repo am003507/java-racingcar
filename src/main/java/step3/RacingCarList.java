@@ -1,6 +1,6 @@
 package step3;
 
-import step3.strategy.MoveStrategy;
+import step3.strategy.RandomStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,20 +17,20 @@ public class RacingCarList {
         IntStream
                 .range(0, carCount)
                 .forEach(i -> {
-            list.add(new Car());
-        });
+                    list.add(new Car(new RandomStrategy()));
+                });
         racingCarList = Collections.unmodifiableList(list);
     }
 
-    public void moveCars(MoveStrategy moveStrategy) {
-        if (moveStrategy == null) {
-            throw new NullPointerException();
-        }
+    public RacingRecord moveCars() {
         racingCarList
-                .forEach(car -> {
-                    int generate = moveStrategy.generate();
-                    car.move(generate);
-                });
+                .forEach(Car::move);
+        return new RacingRecord(
+                racingCarList
+                        .stream()
+                        .map(Car::getLocation)
+                        .collect(Collectors.toList()));
+
     }
 
     public List<Integer> getRacingStatus() {
